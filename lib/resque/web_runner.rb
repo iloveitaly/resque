@@ -85,7 +85,8 @@ module Resque
     end
 
     def url
-      "http://#{host}:#{port}"
+      h = host.include?(':') ? "[#{host}]" : host
+      "http://#{h}:#{port}"
     end
 
     def before_run
