@@ -49,7 +49,7 @@ module Resque
       else
         MultiJson.decode object
       end
-    rescue ::MultiJson::DecodeError => e
+    rescue MultiJson::DecodeError => e
       raise Helpers::DecodeException, e.message, e.backtrace
     end
   end
