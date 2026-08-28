@@ -19,7 +19,7 @@
     </ul>
     <% if Resque.redis.namespace != :resque %>
       <abbr class="namespace" title="Resque's Redis Namespace">
-       <%= Resque.redis.namespace %>
+       <%= h Resque.redis.namespace %>
       </abbr>
     <% end %>
   </div>
@@ -38,7 +38,7 @@
 
 <div id="footer">
   <p>Powered by <a href="http://github.com/resque/resque">Resque</a> v<%=Resque::VERSION%></p>
-  <p>Connected to Redis namespace <%= Resque.redis.namespace %> on <%= h Resque.redis_id %></p>
+  <p>Connected to Redis namespace <%= h Resque.redis.namespace %> on <%= h Resque.redis_id %></p>
 </div>
 
 </body>

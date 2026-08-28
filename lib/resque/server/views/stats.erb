@@ -11,7 +11,7 @@
   <% for key, value in resque.info.to_a.sort_by { |i| i[0].to_s } %>
     <tr>
       <th>
-        <%= key %>
+        <%= h key %>
       </th>
       <td>
         <%= h value %>
@@ -27,10 +27,10 @@
   <% for key, value in resque.redis.redis.info.to_a.sort_by { |i| i[0].to_s } %>
     <tr>
       <th>
-        <%= key %>
+        <%= h key %>
       </th>
       <td>
-        <%= value %>
+        <%= h value %>
       </td>
     </tr>
   <% end %>
@@ -39,7 +39,7 @@
 <% elsif params[:id] == 'keys' %>
 
   <h1>Keys owned by <%= h resque.redis_id %></h1>
-  <p class='sub'>(All keys are actually prefixed with "<%= Resque.redis.namespace %>:")</p>
+  <p class='sub'>(All keys are actually prefixed with "<%= h Resque.redis.namespace %>:")</p>
   <table class='stats'>
     <tr>
       <th>key</th>
@@ -49,7 +49,7 @@
   <% for key in resque.keys.sort %>
     <tr>
       <th>
-        <a href="<%=u "/stats/keys/#{key}" %>"><%= key %></a>
+        <a href="<%= h u("/stats/keys/#{key}") %>"><%= h key %></a>
       </th>
       <td><%= resque.redis.type key %></td>
       <td><%= redis_get_size key %></td>

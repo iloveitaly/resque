@@ -133,4 +133,37 @@ describe "Resque web escaping" do
       assert_escaped last_response.body
     end
   end
+
+  describe "Redis keys and values" do
+    before do
+      Resque.redis.set(PAYLOAD, PAYLOAD)
+      Resque.redis.rpush("list#{PAYLOAD}", PAYLOAD)
+    end
+
+    after do
+      Resque.redis.del(PAYLOAD)
+      Resque.redis.del("list#{PAYLOAD}")
+    end
+
+    it "escapes key names in the key listing" do
+      get "/stats/keys"
+
+      assert last_response.ok?, last_response.errors
+      assert_escaped last_response.body
+    end
+
+    it "escapes a string key's value" do
+      get "/stats/keys?key=#{Rack::Utils.escape(PAYLOAD)}"
+
+      assert last_response.ok?, last_response.errors
+      assert_escaped last_response.body
+    end
+
+    it "escapes a list key's values" do
+      get "/stats/keys?key=#{Rack::Utils.escape("list#{PAYLOAD}")}"
+
+      assert last_response.ok?, last_response.errors
+      assert_escaped last_response.body
+    end
+  end
 end
