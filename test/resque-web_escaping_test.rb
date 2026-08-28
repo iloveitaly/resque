@@ -109,4 +109,28 @@ describe "Resque web escaping" do
       Resque.data_store.unregister_worker(worker) { }
     end
   end
+
+  describe "failed jobs" do
+    before do
+      worker = Resque::Worker.new(PAYLOAD)
+      worker.to_s = "#{PAYLOAD}:1:#{PAYLOAD}"
+      exception = begin
+        raise PAYLOAD
+      rescue => e
+        e
+      end
+      Resque::Failure.create(:payload => { 'class' => PAYLOAD, 'args' => [] },
+                             :exception => exception, :worker => worker,
+                             :queue => PAYLOAD)
+    end
+
+    after { Resque::Failure.clear }
+
+    it "escapes the worker, queue and exception on the failed list" do
+      get "/failed"
+
+      assert last_response.ok?, last_response.errors
+      assert_escaped last_response.body
+    end
+  end
 end

@@ -5,7 +5,7 @@
 <% end %>
 
 <% unless failed_size.zero? %>
-<form method="POST" action="<%= u "failed#{'/' + params[:queue] if params[:queue]}/clear" %>">
+<form method="POST" action="<%= h u("failed#{'/' + params[:queue] if params[:queue]}/clear") %>">
   <input type="submit" name="" value="Clear <%= params[:queue] ? "'#{escape_html(params[:queue])}'" : 'Failed' %> Jobs" class="confirmSubmission" />
 </form>
 
@@ -14,7 +14,7 @@
     <input type="submit" name="" value="Clear Retried Jobs" onclick='return confirm("Are you absolutely sure? This cannot be undone.");' />
   </form>
 <% end %>
-<form method="POST" action="<%= u "failed#{'/' + params[:queue] if params[:queue]}/requeue/all" %>">
+<form method="POST" action="<%= h u("failed#{'/' + params[:queue] if params[:queue]}/requeue/all") %>">
   <input type="submit" name="" value="Retry <%= params[:queue] ? "'#{escape_html(params[:queue])}'" : 'Failed' %> Jobs" class="confirmSubmission" />
 </form>
 <% end %>

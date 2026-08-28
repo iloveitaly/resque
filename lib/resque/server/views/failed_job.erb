@@ -2,28 +2,28 @@
   <dl>
     <% if job.nil? %>
     <dt>Error</dt>
-    <dd>Job <%= id %> could not be parsed; perhaps it contains invalid JSON?</dd>
+    <dd>Job <%= h id %> could not be parsed; perhaps it contains invalid JSON?</dd>
     <% else %>
     <dt>Worker</dt>
     <dd>
-      <a href="<%= u(:workers, job['worker']) %>"><%= job['worker'].split(':')[0...2].join(':') %></a> on <b class='queue-tag'><%= job['queue'] %></b > at <b><span class="time"><%= DateTime.parse(job['failed_at']).strftime(failed_date_format) %></span></b>
+      <a href="<%= h u(:workers, job['worker']) %>"><%= h job['worker'].split(':')[0...2].join(':') %></a> on <b class='queue-tag'><%= h job['queue'] %></b > at <b><span class="time"><%= DateTime.parse(job['failed_at']).strftime(failed_date_format) %></span></b>
       <% if job['retried_at'] %>
         <div class='retried'>
           Retried <b><span class="time"><%= DateTime.parse(job['retried_at']).strftime(failed_date_format) %></span></b>
-          <a href="<%= u "#{queue}/remove/#{id}" %>" class="remove" rel="remove">Remove</a>
+          <a href="<%= h u("#{queue}/remove/#{id}") %>" class="remove" rel="remove">Remove</a>
         </div>
       <% else %>
         <div class='controls'>
-          <a href="<%= u "#{queue}/requeue/#{id}" %>" rel="retry">Retry</a>
+          <a href="<%= h u("#{queue}/requeue/#{id}") %>" rel="retry">Retry</a>
           or
-          <a href="<%= u "#{queue}/remove/#{id}" %>" rel="remove">Remove</a>
+          <a href="<%= h u("#{queue}/remove/#{id}") %>" rel="remove">Remove</a>
         </div>
       <% end %>
     </dd>
     <dt>Class</dt>
     <dd>
       <% if job['payload'] && job['payload']['class'] %>
-        <a href="<%= u "#{queue}?class=#{job['payload']['class']}" %>">
+        <a href="<%= h u("#{queue}?class=#{job['payload']['class']}") %>">
           <%= partial :job_class, :job => job['payload'] %>
         </a>
       <% else %>
@@ -33,7 +33,7 @@
     <dt>Arguments</dt>
     <dd><pre><%=h job['payload'] ? show_args(job['payload']['args']) : 'nil' %></pre></dd>
     <dt>Exception</dt>
-    <dd><code><%= job['exception'] %></code></dd>
+    <dd><code><%= h job['exception'] %></code></dd>
     <dt>Error</dt>
     <dd class='error'>
       <% if job['backtrace'] %>
