@@ -81,4 +81,32 @@ describe "Resque web escaping" do
       assert_escaped last_response.body
     end
   end
+
+  describe "job payloads" do
+    it "escapes the job class in a queue listing" do
+      Resque.push('jobs', 'class' => PAYLOAD, 'args' => [])
+
+      get "/queues/jobs"
+
+      assert last_response.ok?, last_response.errors
+      assert_escaped last_response.body
+    end
+
+    it "escapes the job a worker is processing" do
+      worker = Resque::Worker.new('jobs')
+      Resque.data_store.register_worker(worker)
+      Resque.data_store.set_worker_payload(
+        worker,
+        Resque.encode('queue' => 'jobs', 'run_at' => PAYLOAD,
+                      'payload' => { 'class' => PAYLOAD, 'args' => [] })
+      )
+
+      get "/working"
+
+      assert last_response.ok?, last_response.errors
+      assert_escaped last_response.body
+    ensure
+      Resque.data_store.unregister_worker(worker) { }
+    end
+  end
 end

@@ -15,11 +15,11 @@
         <% host, pid, _ = current_worker.to_s.split(':') %>
         <td><a href="<%= h u("/workers/#{current_worker}") %>"><%= h host %>:<%= h pid %></a></td>
         <% queue = data['queue'] %>
-        <td><a class="queue" href="<%=u "/queues/#{queue}" %>"><%= queue %></a></td>
-        <td><span class="time"><%= data['run_at'] %></span></td>
+        <td><a class="queue" href="<%= h u("/queues/#{queue}") %>"><%= h queue %></a></td>
+        <td><span class="time"><%= h data['run_at'] %></span></td>
         <% payload = data.key?('payload') ? data['payload'] : {} %>
         <td>
-          <code><%= payload.key?('class') ? payload['class'] : "—" %></code>
+          <code><%= payload.key?('class') ? h(payload['class']) : "—" %></code>
         </td>
         <td><pre><%=h payload.key?('args') ? show_args(payload['args']) : "—" %></pre></td>
       </tr>
@@ -55,7 +55,7 @@
         <% host, pid, _queues = worker.to_s.split(':') %>
         <td class='where'><a href="<%= h u("/workers/#{worker}") %>"><%= h host %>:<%= h pid %></a></td>
         <td class='queues queue'>
-          <a class="queue-tag" href="<%=u "/queues/#{job['queue']}" %>"><%= job['queue'] %></a>
+          <a class="queue-tag" href="<%= h u("/queues/#{job['queue']}") %>"><%= h job['queue'] %></a>
         </td>
         <td class='process'>
           <% if job['queue'] %>
