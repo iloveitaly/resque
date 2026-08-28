@@ -29,7 +29,7 @@ module Resque
     def tab(name)
       dname = name.to_s.downcase
       path = url_path(dname)
-      "<li #{class_if_current(path)}><a href='#{path.gsub(" ", "_")}'>#{name}</a></li>"
+      "<li #{class_if_current(path)}><a href='#{h path.gsub(" ", "_")}'>#{h name}</a></li>"
     end
 
     def tabs
@@ -112,7 +112,7 @@ module Resque
       if defined?(@polling) && @polling
         text = "Last Updated: #{Time.now.strftime("%H:%M:%S")}"
       else
-        text = "<a href='#{u(request.path_info)}.poll' rel='poll'>Live Poll!!</a>"
+        text = "<a href='#{h u(request.path_info)}.poll' rel='poll'>Live Poll!!</a>"
       end
       "<p class='poll'>#{text}</p>"
     end

@@ -4,19 +4,19 @@
 <%if  start - per_page >= 0 || start + per_page <= size%>
   <div class='pagination'>
     <% if start - per_page >= 0 %>
-      <a href="<%= current_page %>?start=<%= start - per_page %>" class='less'>&laquo; Previous</a>
+      <a href="<%= h current_page %>?start=<%= start - per_page %>" class='less'>&laquo; Previous</a>
     <% end %>
 
     <% (size / per_page.to_f).ceil.times do |page_num| %>
       <% if start == page_num * per_page %>
         <span><%= page_num + 1 %></span>
       <% else %>
-        <a href="<%= current_page %>?start=<%= page_num * per_page %>"> <%= page_num + 1 %></a>
+        <a href="<%= h current_page %>?start=<%= page_num * per_page %>"> <%= page_num + 1 %></a>
       <% end %>
     <% end %>
 
     <% if start + per_page < size %>
-      <a href="<%= current_page %>?start=<%= start + per_page %>" class='more'>Next &raquo;</a>
+      <a href="<%= h current_page %>?start=<%= start + per_page %>" class='more'>Next &raquo;</a>
     <% end %>
   </div>
 <%end%>
