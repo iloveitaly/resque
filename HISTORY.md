@@ -1,3 +1,12 @@
+## 3.0.1
+
+### Fixed
+
+* resque-web: Fix reflected XSS in the key sets endpoint (#1942)
+* Address multi_json class name deprecation warning (#1940)
+* Update the Rails initializer docs to load Redis config with `config_for` (#1936)
+* Add tests covering queue priority ordering with wildcards (#1930)
+
 ## 3.0.0
 
 ### Breaking Changes
