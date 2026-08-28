@@ -1,5 +1,5 @@
 <% if params[:id] && (current_worker = Resque::Worker.find(params[:id])) && (data = current_worker.job) %>
-  <h1><%= current_worker %>'s job</h1>
+  <h1><%= h current_worker %>'s job</h1>
 
   <table>
     <tr>
@@ -13,7 +13,7 @@
       <tr>
         <td><img src="<%=u 'working.png' %>" alt="working" title="working"></td>
         <% host, pid, _ = current_worker.to_s.split(':') %>
-        <td><a href="<%=u "/workers/#{current_worker}" %>"><%= host %>:<%= pid %></a></td>
+        <td><a href="<%= h u("/workers/#{current_worker}") %>"><%= h host %>:<%= h pid %></a></td>
         <% queue = data['queue'] %>
         <td><a class="queue" href="<%=u "/queues/#{queue}" %>"><%= queue %></a></td>
         <td><span class="time"><%= data['run_at'] %></span></td>
@@ -51,9 +51,9 @@
 
     <% worker_jobs.sort_by { |_w, j| j['run_at'] ? j['run_at'].to_s() : '' }.each do |worker, job| %>
       <tr>
-        <td class='icon'><img src="<%=u state = worker.state %>.png" alt="<%= state %>" title="<%= state %>"></td>
+        <td class='icon'><img src="<%= h u(state = worker.state) %>.png" alt="<%= h state %>" title="<%= h state %>"></td>
         <% host, pid, _queues = worker.to_s.split(':') %>
-        <td class='where'><a href="<%=u "/workers/#{worker}" %>"><%= host %>:<%= pid %></a></td>
+        <td class='where'><a href="<%= h u("/workers/#{worker}") %>"><%= h host %>:<%= h pid %></a></td>
         <td class='queues queue'>
           <a class="queue-tag" href="<%=u "/queues/#{job['queue']}" %>"><%= job['queue'] %></a>
         </td>

@@ -2,7 +2,7 @@
 
 <% if params[:id] && worker = Resque::Worker.find(params[:id]) %>
 
-  <h1>Worker <%= worker %></h1>
+  <h1>Worker <%= h worker %></h1>
   <table class='workers'>
     <tr>
       <th>&nbsp;</th>
@@ -16,14 +16,14 @@
       <th>Processing</th>
     </tr>
     <tr>
-      <td class='icon'><img src="<%=u state = worker.state %>.png" alt="<%= state %>" title="<%= state %>"></td>
+      <td class='icon'><img src="<%= h u(state = worker.state) %>.png" alt="<%= h state %>" title="<%= h state %>"></td>
 
       <% host, pid, queues = worker.to_s.split(':') %>
-      <td><%= host %></td>
-      <td><%= pid %></td>
-      <td><span class="time"><%= worker.started %></span></td>
-      <td><span class="time"><%= worker.heartbeat %></span></td>
-      <td class='queues'><%= queues.split(',').map { |q| '<a class="queue-tag" href="' + u("/queues/#{q}") + '">' + q + '</a>'}.join('') %></td>
+      <td><%= h host %></td>
+      <td><%= h pid %></td>
+      <td><span class="time"><%= h worker.started %></span></td>
+      <td><span class="time"><%= h worker.heartbeat %></span></td>
+      <td class='queues'><%= queues.split(',').map { |q| '<a class="queue-tag" href="' + h(u("/queues/#{q}")) + '">' + h(q) + '</a>'}.join('') %></td>
       <td><%= worker.processed %></td>
       <td><%= worker.failed %></td>
       <td class='process'>
@@ -60,11 +60,11 @@
     </tr>
     <% for worker in (workers = workers.sort_by { |w| w.to_s }) %>
     <tr class="<%=state = worker.state%>">
-      <td class='icon'><img src="<%=u state %>.png" alt="<%= state %>" title="<%= state %>"></td>
+      <td class='icon'><img src="<%= h u(state) %>.png" alt="<%= h state %>" title="<%= h state %>"></td>
 
       <% host, pid, queues = worker.to_s.split(':') %>
-      <td class='where'><a href="<%=u "workers/#{worker}"%>"><%= host %>:<%= pid %></a></td>
-      <td class='queues'><%= queues.split(',').map { |q| '<a class="queue-tag" href="' + u("/queues/#{q}") + '">' + q + '</a>'}.join('') %></td>
+      <td class='where'><a href="<%= h u("workers/#{worker}") %>"><%= h host %>:<%= h pid %></a></td>
+      <td class='queues'><%= queues.split(',').map { |q| '<a class="queue-tag" href="' + h(u("/queues/#{q}")) + '">' + h(q) + '</a>'}.join('') %></td>
 
       <td class='process'>
         <% data = worker.processing || {} %>
@@ -95,7 +95,7 @@
     </tr>
     <% for hostname, workers in worker_hosts.sort_by { |h,w| h } %>
     <tr>
-      <td class='queue'><a class="queue" href="<%= u "workers/#{hostname}" %>"><%= hostname %></a></td>
+      <td class='queue'><a class="queue" href="<%= h u("workers/#{hostname}") %>"><%= h hostname %></a></td>
       <td class='size'><%= workers.size %></td>
     </tr>
     <% end %>

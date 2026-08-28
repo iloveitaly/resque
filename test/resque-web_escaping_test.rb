@@ -56,4 +56,29 @@ describe "Resque web escaping" do
       assert_escaped last_response.body
     end
   end
+
+  describe "worker identifiers" do
+    before do
+      @worker = Resque::Worker.new(PAYLOAD)
+      @worker.hostname = PAYLOAD
+      @worker.to_s = "#{PAYLOAD}:1:#{PAYLOAD}"
+      Resque.data_store.register_worker(@worker)
+    end
+
+    after { Resque.data_store.unregister_worker(@worker) { } }
+
+    it "escapes them in the worker listing" do
+      get "/workers/all"
+
+      assert last_response.ok?, last_response.errors
+      assert_escaped last_response.body
+    end
+
+    it "escapes them on a worker's own page" do
+      get "/workers/#{Rack::Utils.escape_path(@worker.to_s)}"
+
+      assert last_response.ok?, last_response.errors
+      assert_escaped last_response.body
+    end
+  end
 end
