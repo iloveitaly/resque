@@ -168,7 +168,7 @@ module Resque
         stats << "queues.#{queue}=#{Resque.size(queue)}"
       end
 
-      content_type 'text/html'
+      content_type 'text/plain'
       stats.join "\n"
     end
 

@@ -166,4 +166,16 @@ describe "Resque web escaping" do
       assert_escaped last_response.body
     end
   end
+
+  describe "the stats.txt metrics feed" do
+    it "is served as text/plain so queue names cannot execute" do
+      Resque.push(PAYLOAD, 'class' => 'SomeJob', 'args' => [])
+
+      get "/stats.txt"
+
+      assert last_response.ok?, last_response.errors
+      assert_includes last_response.headers['content-type'], 'text/plain'
+      refute_includes last_response.headers['content-type'], 'text/html'
+    end
+  end
 end
