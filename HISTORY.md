@@ -1,3 +1,16 @@
+## 3.0.2
+
+### Added
+
+* resque-web: Support IPv6 hosts in the server URL (#1938)
+
+### Fixed
+
+* resque-web: Escape queue names, worker IDs, job classes, failed job details, Redis keys/values, and the reflected request path; serve `/stats.txt` as `text/plain` (#1946)
+* resque-web: Fix the class filter link URL on the failed jobs page (#1934)
+* Prefer `MultiJson.generate`/`parse` over the deprecated `dump`/`load` (#1944)
+* Add tests covering which hooks run in which process (#1932)
+
 ## 3.0.1
 
 ### Fixed
